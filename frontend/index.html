@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kicau</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header class="top">
+      <h1>Kicau</h1>
+      <button id="refresh" class="ghost" type="button">↻ Muat semula</button>
+    </header>
+
+    <!-- Borang post baru. "required" & "maxlength" = validasi asas oleh browser. -->
+    <form id="post-form">
+      <input name="username" placeholder="Nama anda" required maxlength="30">
+      <textarea name="content" placeholder="Apa cerita hari ini?" required maxlength="500"></textarea>
+      <div class="form-footer">
+        <span id="counter" class="muted">0/500</span>
+        <button class="primary">Post</button>
+      </div>
+    </form>
+
+    <!-- Senarai post diisi oleh app.js -->
+    <ul id="feed"></ul>
+  </main>
+
+  <!-- Templat satu post. app.js salin (clone) templat ini untuk setiap post. -->
+  <template id="post-template">
+    <li class="post">
+      <div class="avatar"></div>
+      <div class="body">
+        <div class="meta">
+          <strong class="username"></strong>
+          <time class="time muted"></time>
+        </div>
+        <p class="content"></p>
+        <div class="actions">
+          <button class="like" type="button">♡ <span class="count">0</span></button>
+          <button class="reply-toggle" type="button">💬 <span class="count">0</span></button>
+        </div>
+        <div class="thread" hidden>
+          <ul class="replies"></ul>
+          <form class="reply-form">
+            <input name="content" placeholder="Balas..." required maxlength="500" aria-label="Balasan">
+            <button class="primary">Balas</button>
+          </form>
+        </div>
+      </div>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

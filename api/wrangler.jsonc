@@ -1,0 +1,19 @@
+{
+  // Nama Worker. URL selepas deploy: https://kicau.<subdomain-anda>.workers.dev
+  "name": "kicau",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+
+  // Worker ini juga hos salinan frontend, supaya URL Worker boleh terus dibuka sebagai demo.
+  // Request yang bukan fail statik (contoh /api/posts) akan sampai ke worker.js.
+  "assets": { "directory": "../frontend" },
+
+  // Sambungan ke database D1. Dalam kod Worker, guna: env.DB
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kicau-db",
+      "database_id": "d303d833-a148-4931-9f02-d7c0361d872b"
+    }
+  ]
+}

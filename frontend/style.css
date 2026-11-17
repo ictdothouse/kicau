@@ -1,0 +1,155 @@
+/* Warna sebagai pemboleh ubah (CSS variables). Mod gelap tukar nilai sahaja. */
+:root {
+  --bg: #ffffff;
+  --fg: #101114;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --field: #f6f7f9;
+  --like: #e11d48;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f11;
+    --fg: #f3f4f6;
+    --muted: #9ca3af;
+    --line: #26282d;
+    --field: #17191c;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.muted { color: var(--muted); font-size: 13px; }
+
+/* Header melekat di atas semasa scroll */
+.top {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.top h1 { margin: 0; font-size: 1.3rem; }
+
+/* Borang */
+#post-form {
+  display: grid;
+  gap: 8px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+input, textarea {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: var(--field);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+textarea { min-height: 84px; resize: vertical; }
+
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+button { font: inherit; cursor: pointer; }
+
+.primary {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 600;
+  background: var(--fg);
+  color: var(--bg);
+}
+.primary:disabled { opacity: 0.5; cursor: default; }
+
+.ghost {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: none;
+  color: var(--fg);
+}
+
+/* Senarai post */
+#feed, .replies { list-style: none; margin: 0; padding: 0; }
+
+/* Mesej bila feed kosong: CSS sahaja, tiada JS */
+#feed:empty::after {
+  content: "Belum ada post. Jadilah yang pertama!";
+  display: block;
+  padding: 48px 0;
+  text-align: center;
+  color: var(--muted);
+}
+
+.post {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.avatar {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-weight: 700;
+}
+
+.body { flex: 1; min-width: 0; }
+.meta { display: flex; gap: 8px; align-items: baseline; }
+
+.content {
+  margin: 2px 0 8px;
+  white-space: pre-wrap;      /* kekalkan baris baru yang ditaip pengguna */
+  overflow-wrap: anywhere;    /* perkataan panjang tak pecahkan layout */
+}
+
+.actions { display: flex; gap: 18px; }
+.actions button {
+  border: 0;
+  padding: 4px 0;
+  background: none;
+  color: var(--muted);
+}
+.actions button:hover { color: var(--fg); }
+.actions .liked { color: var(--like); }
+
+/* Bahagian reply */
+.thread {
+  margin-top: 10px;
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+}
+.replies .post { padding: 10px 0; border-bottom: 0; }
+.replies .avatar { width: 30px; height: 30px; font-size: 13px; }
+
+.reply-form { display: flex; gap: 8px; margin-top: 8px; }

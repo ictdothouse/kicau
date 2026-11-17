@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panduan Kicau Bahagian 1</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: satu lajur bacaan (maks 720px); skrin lebar tambah daftar isi melekat di kiri. */
+:root {
+  --bg: #fafbfc;
+  --fg: #16181d;
+  --muted: #5b6170;
+  --line: #e1e4ea;
+  --panel: #f1f3f7;
+  --accent: #2b4fd6;
+  --accent-soft: #e8edfd;
+  --warn: #855600;
+  --warn-soft: #fcf2da;
+  --code-bg: #f4f5f9;
+  --syn-key: #8a2fc6;
+  --syn-str: #2e7a31;
+  --syn-fn: #2b4fd6;
+  --syn-attr: #9c5800;
+  --syn-tag: #b3321f;
+  --syn-num: #0b6f80;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1116; --fg: #e6e8ee; --muted: #9ba1af; --line: #272b35; --panel: #171a21;
+    --accent: #8ca3ff; --accent-soft: #1b2341; --warn: #f0c46a; --warn-soft: #2a2110;
+    --code-bg: #14171d; --syn-key: #d29cff; --syn-str: #9bd29e; --syn-fn: #8ca3ff;
+    --syn-attr: #f0b46b; --syn-tag: #ff9c86; --syn-num: #7fd5e5;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1116; --fg: #e6e8ee; --muted: #9ba1af; --line: #272b35; --panel: #171a21;
+  --accent: #8ca3ff; --accent-soft: #1b2341; --warn: #f0c46a; --warn-soft: #2a2110;
+  --code-bg: #14171d; --syn-key: #d29cff; --syn-str: #9bd29e; --syn-fn: #8ca3ff;
+  --syn-attr: #f0b46b; --syn-tag: #ff9c86; --syn-num: #7fd5e5;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.65 var(--font-body); }
+a { color: var(--accent); text-underline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-block: 48px 96px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.layout { display: grid; gap: 32px; }
+article { min-width: 0; max-width: 720px; }
+
+/* Daftar isi */
+.toc { font-size: 14px; }
+.toc-title, .eyebrow, .who, figcaption, .chip {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.toc-title { margin: 0 0 8px; color: var(--muted); }
+.toc ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.toc a { display: flex; gap: 10px; padding: 3px 0; color: var(--fg); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+.toc .n { font-family: var(--font-mono); color: var(--muted); min-width: 1.6em; }
+@media (min-width: 1000px) {
+  .layout { grid-template-columns: 200px minmax(0, 1fr); gap: 56px; }
+  .toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 32px); align-self: start; }
+}
+@media (max-width: 999px) {
+  .toc { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .toc ol { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); column-gap: 16px; }
+}
+
+/* Tajuk */
+.hero { padding-bottom: 32px; }
+.eyebrow { color: var(--accent); margin: 0 0 12px; }
+h1 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); line-height: 1.15; letter-spacing: -0.015em; margin: 0 0 14px; text-wrap: balance; }
+.lead { font-size: 1.12rem; color: var(--muted); margin: 0 0 24px; max-width: 62ch; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 0; }
+.facts div { border-top: 2px solid var(--fg); padding-top: 8px; }
+.facts dt { font-weight: 600; font-size: 14px; }
+.facts dd { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+
+section { padding-block: 40px; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
+h2 { font-size: 1.5rem; line-height: 1.25; margin: 0 0 14px; display: flex; gap: 12px; align-items: baseline; text-wrap: balance; }
+h2 .num { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 500; color: var(--accent); }
+h3 { font-size: 1.1rem; margin: 32px 0 8px; text-wrap: balance; }
+p, li { max-width: 68ch; }
+:not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 0.05em 0.35em;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0 0.35em;
+  background: var(--bg);
+}
+
+/* Blok kod */
+figure.code { margin: 16px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--code-bg); overflow: hidden; min-width: 0; }
+figcaption { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 8px 6px 14px; border-bottom: 1px solid var(--line); color: var(--muted); }
+pre { margin: 0; overflow-x: auto; }
+pre code { display: block; padding: 14px 16px; font: 13.5px/1.6 var(--font-mono); tab-size: 2; }
+.copy {
+  font: 500 12px var(--font-body);
+  text-transform: none;
+  letter-spacing: 0;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.copy:hover { border-color: var(--accent); }
+
+/* Warna sintaks (highlight.js) */
+.hljs-keyword, .hljs-literal, .hljs-built_in, .hljs-type { color: var(--syn-key); }
+.hljs-string, .hljs-regexp, .hljs-template-variable { color: var(--syn-str); }
+.hljs-comment { color: var(--muted); font-style: italic; }
+.hljs-title, .hljs-title.function_ { color: var(--syn-fn); }
+.hljs-attr, .hljs-attribute, .hljs-property, .hljs-variable, .hljs-params { color: var(--syn-attr); }
+.hljs-tag, .hljs-name, .hljs-selector-tag, .hljs-selector-class, .hljs-selector-id, .hljs-selector-pseudo { color: var(--syn-tag); }
+.hljs-number { color: var(--syn-num); }
+.hljs-meta, .hljs-punctuation { color: var(--muted); }
+
+/* Nota & amaran */
+.note, .warn { border-radius: 8px; padding: 14px 16px; margin: 18px 0; }
+.note { background: var(--accent-soft); }
+.warn { background: var(--warn-soft); }
+.note .label, .warn .label { display: block; font: 600 12px/1 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.note .label { color: var(--accent); }
+.warn .label { color: var(--warn); }
+.note p, .warn p { margin: 0; }
+
+/* Jadual */
+.table { overflow-x: auto; margin: 16px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; font-family: var(--font-mono); letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+td:first-child { white-space: nowrap; }
+
+/* Langkah bernombor */
+ol.steps { counter-reset: step; list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 14px; }
+ol.steps > li { counter-increment: step; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; max-width: none; }
+ol.steps > li::before {
+  content: counter(step);
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center;
+  font: 600 13px var(--font-mono);
+  background: var(--accent-soft); color: var(--accent);
+}
+ol.steps > li > div { min-width: 0; padding-top: 2px; }
+ol.steps figure.code { margin: 10px 0 0; }
+
+/* Rajah aliran */
+.flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; margin: 24px 0; }
+.node { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 14px; min-width: 0; }
+.node.you { border-color: var(--accent); background: var(--accent-soft); }
+.who { color: var(--accent); }
+.node h4 { margin: 8px 0 4px; font-size: 1rem; }
+.node p { margin: 0; font-size: 14px; color: var(--muted); }
+.link { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; padding: 0 2px; font: 12px var(--font-mono); color: var(--muted); text-align: center; }
+.link .glyph { font-size: 20px; line-height: 1; color: var(--fg); }
+@media (max-width: 680px) {
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .link { flex-direction: row; gap: 10px; padding: 2px 0; }
+  .link .glyph { transform: rotate(90deg); }
+}
+
+/* Latihan */
+.exercise { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 14px 0; }
+.exercise h3 { margin: 0 0 6px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.exercise p { margin: 0 0 8px; }
+.chip { font-size: 11px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); font-weight: 500; }
+.chip.easy { color: var(--syn-str); border-color: currentColor; }
+.chip.mid { color: var(--warn); border-color: currentColor; }
+.chip.hard { color: var(--syn-tag); border-color: currentColor; }
+details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+details[open] summary { margin-bottom: 6px; }
+
+footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <div class="layout">
+    <nav class="toc" aria-label="Kandungan">
+      <p class="toc-title">Kandungan</p>
+      <ol>
+        <li><a href="#apa"><span class="n">1</span>Apa yang kita bina</a></li>
+        <li><a href="#persediaan"><span class="n">2</span>Persediaan</a></li>
+        <li><a href="#fail"><span class="n">3</span>Kenali tiga fail</a></li>
+        <li><a href="#api"><span class="n">4</span>Cuba API dalam browser</a></li>
+        <li><a href="#html"><span class="n">5</span>index.html</a></li>
+        <li><a href="#css"><span class="n">6</span>style.css</a></li>
+        <li><a href="#js"><span class="n">7</span>app.js</a></li>
+        <li><a href="#aliran"><span class="n">8</span>Bila anda tekan Post</a></li>
+        <li><a href="#database"><span class="n">9</span>Database</a></li>
+        <li><a href="#latihan"><span class="n">10</span>Latihan</a></li>
+        <li><a href="#masalah"><span class="n">11</span>Masalah biasa</a></li>
+        <li><a href="#pensyarah"><span class="n">12</span>Untuk pensyarah</a></li>
+        <li><a href="#seterusnya"><span class="n">13</span>Seterusnya</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <header class="hero">
+        <p class="eyebrow">Web Development · Panduan Bahagian 1</p>
+        <h1>Bina Kicau, app mikroblog pertama anda</h1>
+        <p class="lead">Anda akan jalankan Kicau, sebuah app gaya Threads, dan faham bagaimana tiga fail HTML, CSS dan JavaScript bercakap dengan pangkalan data sebenar di internet.</p>
+        <dl class="facts">
+          <div><dt>Anda perlukan</dt><dd>Browser (Chrome, Edge atau Firefox) dan text editor (VS Code atau Notepad)</dd></div>
+          <div><dt>Tiada install</dt><dd>Tiada npm, tiada server. Hanya buka fail.</dd></div>
+          <div><dt>Anda akan belajar</dt><dd><code>fetch()</code>, JSON, DOM, event dan SQL asas</dd></div>
+        </dl>
+      </header>
+
+      <section id="apa">
+        <h2><span class="num">01</span>Apa yang kita bina</h2>
+        <p>Kicau membolehkan semua orang dalam kelas menulis post pendek, menekan like dan membalas post orang lain. Semua post disimpan dalam satu pangkalan data. Apabila rakan anda post sesuatu, anda nampak post itu selepas menekan <strong>Muat semula</strong>.</p>
+
+        <div class="flow" role="img" aria-label="Browser menghantar permintaan fetch ke API, API menjalankan SQL pada database D1, kemudian jawapan JSON kembali ke browser.">
+          <div class="node you">
+            <span class="who">Anda edit ini</span>
+            <h4>Browser</h4>
+            <p>index.html, style.css, app.js</p>
+          </div>
+          <div class="link"><span>fetch()</span><span class="glyph">⟶</span><span class="glyph">⟵</span><span>JSON</span></div>
+          <div class="node">
+            <span class="who">Pensyarah sediakan</span>
+            <h4>API</h4>
+            <p>Cloudflare Worker, alamat <code>/api/posts</code></p>
+          </div>
+          <div class="link"><span>SQL</span><span class="glyph">⟶</span><span class="glyph">⟵</span><span>baris data</span></div>
+          <div class="node">
+            <span class="who">Data disimpan di sini</span>
+            <h4>Database</h4>
+            <p>Cloudflare D1, table <code>posts</code></p>
+          </div>
+        </div>
+
+        <h3>Kenapa perlu API di tengah?</h3>
+        <p>Untuk membaca atau menulis pangkalan data, program perlukan kunci rahsia (token). Jika kunci itu diletak dalam <code>app.js</code>, sesiapa sahaja boleh tekan <kbd>F12</kbd>, salin kunci itu dan padam semua data. Jadi kunci disimpan di server (API) sahaja. Browser anda hanya boleh meminta perkara yang API benarkan: senarai post, post baru, like dan reply.</p>
+        <div class="note">
+          <span class="label">Nota</span>
+          <p>Hampir semua app web ikut corak ini: frontend → API → database. Instagram, Shopee dan Threads pun sama.</p>
+        </div>
+      </section>
+
+      <section id="persediaan">
+        <h2><span class="num">02</span>Persediaan</h2>
+        <ol class="steps">
+          <li><div>Dapatkan folder <code>frontend</code> daripada pensyarah, atau dari GitHub: klik <strong>Code → Download ZIP</strong>, kemudian extract.</div></li>
+          <li><div>Buka <code>app.js</code> dengan text editor. Pada baris 6, pastikan URL ialah URL API yang diberi pensyarah.
+            <figure class="code"><figcaption>app.js · baris 6</figcaption><pre><code class="language-js">const API = 'https://kicau.nama-anda.workers.dev';</code></pre></figure>
+          </div></li>
+          <li><div>Double-click <code>index.html</code>. App terbuka dalam browser.</div></li>
+          <li><div>Taip nama anda, tulis sesuatu dan tekan <strong>Post</strong>. Post anda muncul di atas senarai.</div></li>
+        </ol>
+        <div class="warn">
+          <span class="label">Jika gagal</span>
+          <p>Jika keluar mesej <em>Gagal muat post</em>, lihat <a href="#masalah">bahagian 11, Masalah biasa</a>.</p>
+        </div>
+      </section>
+
+      <section id="fail">
+        <h2><span class="num">03</span>Kenali tiga fail</h2>
+        <div class="table">
+          <table>
+            <thead><tr><th>Fail</th><th>Peranan</th><th>Contoh dalam Kicau</th></tr></thead>
+            <tbody>
+              <tr><td><code>index.html</code></td><td>Struktur: apa yang ada di halaman</td><td>Borang post, senarai post, templat satu post</td></tr>
+              <tr><td><code>style.css</code></td><td>Rupa: warna, saiz, susun atur</td><td>Avatar bulat, mod gelap, butang hitam</td></tr>
+              <tr><td><code>app.js</code></td><td>Tingkah laku: apa berlaku bila pengguna buat sesuatu</td><td>Ambil post dari API, hantar post, like</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Ketiga-tiga fail mesti berada dalam folder yang sama, kerana <code>index.html</code> memanggil <code>style.css</code> dan <code>app.js</code> menggunakan nama fail sahaja.</p>
+      </section>
+
+      <section id="api">
+        <h2><span class="num">04</span>Cuba API terus dalam browser</h2>
+        <p>Sebelum membaca kod, lihat dahulu data yang app terima. Buka tab baru dan taip URL API ditambah <code>/api/posts</code>:</p>
+        <figure class="code"><figcaption>Bar alamat browser</figcaption><pre><code class="language-plaintext">https://kicau.nama-anda.workers.dev/api/posts</code></pre></figure>
+        <p>Anda akan nampak teks seperti di bawah. Ini <strong>JSON</strong>, format teks untuk menghantar data antara program. Tanda <code>[ ]</code> ialah senarai, dan <code>{ }</code> ialah satu objek (satu post).</p>
+        <figure class="code"><figcaption>Jawapan API</figcaption><pre><code class="language-json">[
+  {
+    "id": 1,
+    "username": "pensyarah",
+    "content": "Selamat datang ke kelas Web Development!",
+    "parent_id": null,
+    "likes": 2,
+    "created_at": "2026-11-17 08:06:49",
+    "reply_count": 0
+  }
+]</code></pre></figure>
+        <div class="table">
+          <table>
+            <thead><tr><th>Medan</th><th>Maksud</th></tr></thead>
+            <tbody>
+              <tr><td><code>id</code></td><td>Nombor unik setiap post, diberi oleh database</td></tr>
+              <tr><td><code>username</code></td><td>Nama penulis</td></tr>
+              <tr><td><code>content</code></td><td>Isi post</td></tr>
+              <tr><td><code>parent_id</code></td><td><code>null</code> untuk post biasa. Untuk reply, ia ialah <code>id</code> post yang dibalas.</td></tr>
+              <tr><td><code>likes</code></td><td>Bilangan like</td></tr>
+              <tr><td><code>created_at</code></td><td>Masa post dibuat, dalam waktu UTC (8 jam di belakang waktu Malaysia)</td></tr>
+              <tr><td><code>reply_count</code></td><td>Bilangan reply</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Senarai API</h3>
+        <div class="table">
+          <table>
+            <thead><tr><th>Kaedah</th><th>Alamat</th><th>Fungsi</th></tr></thead>
+            <tbody>
+              <tr><td><code>GET</code></td><td><code>/api/posts</code></td><td>Ambil 50 post terbaru</td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/posts</code></td><td>Cipta post. Hantar <code>{"username": "ali", "content": "hai"}</code></td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/posts</code></td><td>Cipta reply. Tambah <code>"parent_id": 1</code></td></tr>
+              <tr><td><code>GET</code></td><td><code>/api/posts/1/replies</code></td><td>Ambil semua reply bagi post 1</td></tr>
+              <tr><td><code>POST</code></td><td><code>/api/posts/1/like</code></td><td>Tambah 1 like pada post 1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><code>GET</code> bermaksud <em>minta data</em>. <code>POST</code> bermaksud <em>hantar data atau buat perubahan</em>. Bar alamat browser hanya boleh buat <code>GET</code>; <code>POST</code> dihantar oleh JavaScript.</p>
+
+        <h3>Intip dengan DevTools</h3>
+        <ol class="steps">
+          <li><div>Dalam app Kicau, tekan <kbd>F12</kbd> dan pilih tab <strong>Network</strong>.</div></li>
+          <li><div>Klik penapis <strong>Fetch/XHR</strong> supaya hanya permintaan API dipaparkan.</div></li>
+          <li><div>Tekan butang <strong>Muat semula</strong> dalam app. Satu baris bernama <code>posts</code> muncul. Klik baris itu, kemudian pilih tab <strong>Response</strong>.</div></li>
+          <li><div>Tekan ♡ pada mana-mana post. Permintaan baru bernama <code>like</code> dengan kaedah <code>POST</code> muncul.</div></li>
+        </ol>
+      </section>
+
+      <section id="html">
+        <h2><span class="num">05</span>index.html: rangka halaman</h2>
+        <figure class="code"><figcaption>index.html</figcaption><pre><code class="language-html">&lt;form id="post-form"&gt;
+  &lt;input name="username" placeholder="Nama anda" required maxlength="30"&gt;
+  &lt;textarea name="content" placeholder="Apa cerita hari ini?" required maxlength="500"&gt;&lt;/textarea&gt;
+  &lt;div class="form-footer"&gt;
+    &lt;span id="counter" class="muted"&gt;0/500&lt;/span&gt;
+    &lt;button class="primary"&gt;Post&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/form&gt;
+
+&lt;!-- Senarai post diisi oleh app.js --&gt;
+&lt;ul id="feed"&gt;&lt;/ul&gt;</code></pre></figure>
+        <ul>
+          <li><code>required</code> dan <code>maxlength</code> ialah validasi terbina dalam browser. Browser tidak akan hantar borang jika nama kosong.</li>
+          <li><code>&lt;ul id="feed"&gt;</code> sengaja dibiarkan kosong. JavaScript akan mengisinya dengan post.</li>
+        </ul>
+        <figure class="code"><figcaption>index.html · templat satu post (diringkaskan)</figcaption><pre><code class="language-html">&lt;template id="post-template"&gt;
+  &lt;li class="post"&gt;
+    &lt;div class="avatar"&gt;&lt;/div&gt;
+    &lt;div class="body"&gt;
+      &lt;div class="meta"&gt;
+        &lt;strong class="username"&gt;&lt;/strong&gt;
+        &lt;time class="time muted"&gt;&lt;/time&gt;
+      &lt;/div&gt;
+      &lt;p class="content"&gt;&lt;/p&gt;
+      &lt;div class="actions"&gt;
+        &lt;button class="like" type="button"&gt;♡ &lt;span class="count"&gt;0&lt;/span&gt;&lt;/button&gt;
+        &lt;button class="reply-toggle" type="button"&gt;💬 &lt;span class="count"&gt;0&lt;/span&gt;&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/template&gt;</code></pre></figure>
+        <p>Kandungan dalam <code>&lt;template&gt;</code> tidak dipaparkan. Ia sebuah acuan: setiap kali <code>app.js</code> perlu memaparkan satu post, ia menyalin acuan ini dan mengisi nama serta isi post.</p>
+        <p><code>&lt;script src="app.js"&gt;</code> diletak di hujung <code>&lt;body&gt;</code>, supaya semua elemen sudah wujud ketika JavaScript mula berjalan.</p>
+      </section>
+
+      <section id="css">
+        <h2><span class="num">06</span>style.css: rupa</h2>
+        <figure class="code"><figcaption>style.css · pemboleh ubah warna</figcaption><pre><code class="language-css">:root {
+  --bg: #ffffff;
+  --fg: #101114;
+  --like: #e11d48;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0f11;
+    --fg: #f3f4f6;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}</code></pre></figure>
+        <p>Warna ditulis sekali sebagai pemboleh ubah (<code>--bg</code>, <code>--fg</code>). Apabila komputer pengguna dalam mod gelap, hanya nilai pemboleh ubah ditukar. Peraturan lain kekal sama.</p>
+        <figure class="code"><figcaption>style.css · mesej senarai kosong</figcaption><pre><code class="language-css">#feed:empty::after {
+  content: "Belum ada post. Jadilah yang pertama!";
+  display: block;
+  text-align: center;
+}</code></pre></figure>
+        <p>Apabila <code>#feed</code> tiada isi, CSS sendiri memaparkan mesej. Tiada JavaScript diperlukan.</p>
+        <figure class="code"><figcaption>style.css · susun atur satu post</figcaption><pre><code class="language-css">.post {
+  display: flex;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}</code></pre></figure>
+        <p><code>display: flex</code> meletakkan avatar di kiri dan isi post di kanan. <code>gap</code> memberi jarak antara keduanya.</p>
+      </section>
+
+      <section id="js">
+        <h2><span class="num">07</span>app.js: otak app</h2>
+
+        <h3>7.1 Fungsi <code>api()</code>: bercakap dengan server</h3>
+        <figure class="code"><figcaption>app.js</figcaption><pre><code class="language-js">const API = 'https://kicau.nama-anda.workers.dev';
+
+async function api(path, method = 'GET', body) {
+  const res = await fetch(API + path, {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body: body &amp;&amp; JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error);
+  return data;
+}</code></pre></figure>
+        <ol class="steps">
+          <li><div><code>fetch()</code> menghantar permintaan ke <code>API + path</code>, contohnya <code>…/api/posts</code>.</div></li>
+          <li><div><code>await</code> menunggu jawapan sampai tanpa membekukan halaman. Sebab itu fungsi ditanda <code>async</code>.</div></li>
+          <li><div><code>JSON.stringify(body)</code> menukar objek JavaScript kepada teks JSON untuk dihantar.</div></li>
+          <li><div><code>res.json()</code> menukar teks JSON yang diterima kembali kepada objek JavaScript.</div></li>
+          <li><div>Jika server balas status gagal (contoh 400), <code>throw</code> menghantar mesej ralat server kepada blok <code>catch</code> yang memanggil fungsi ini.</div></li>
+        </ol>
+        <p>Satu fungsi ini dipakai untuk semua permintaan: <code>api('/api/posts')</code> untuk ambil senarai, dan <code>api('/api/posts', 'POST', {...})</code> untuk hantar post baru.</p>
+
+        <h3>7.2 <code>renderPost()</code>: tukar data kepada HTML</h3>
+        <figure class="code"><figcaption>app.js (diringkaskan)</figcaption><pre><code class="language-js">function renderPost(post) {
+  const el = template.content.firstElementChild.cloneNode(true);
+
+  el.querySelector('.username').textContent = post.username;
+  el.querySelector('.time').textContent = timeAgo(post.created_at);
+  el.querySelector('.content').textContent = post.content;
+
+  // ... avatar, butang like, reply
+
+  return el;
+}</code></pre></figure>
+        <p><code>cloneNode(true)</code> menyalin acuan <code>&lt;li&gt;</code> dari <code>&lt;template&gt;</code> beserta semua elemen di dalamnya. Kemudian setiap bahagian diisi dengan data post.</p>
+        <div class="warn">
+          <span class="label">Keselamatan</span>
+          <p>Sentiasa guna <code>textContent</code>, bukan <code>innerHTML</code>, untuk teks yang ditaip pengguna. Cuba post <code>&lt;b&gt;hai&lt;/b&gt;</code>: ia dipaparkan sebagai teks biasa. Dengan <code>innerHTML</code>, browser akan menjalankan apa-apa HTML atau skrip yang ditaip orang lain. Serangan ini dipanggil XSS.</p>
+        </div>
+
+        <h3>7.3 <code>loadFeed()</code>: papar semua post</h3>
+        <figure class="code"><figcaption>app.js</figcaption><pre><code class="language-js">async function loadFeed() {
+  try {
+    const posts = await api('/api/posts');
+    feed.replaceChildren(...posts.map(renderPost));
+  } catch (err) {
+    alert('Gagal muat post: ' + err.message);
+  }
+}</code></pre></figure>
+        <p><code>posts.map(renderPost)</code> menukar senarai data kepada senarai elemen <code>&lt;li&gt;</code>. <code>replaceChildren()</code> membuang kandungan lama dan memasukkan yang baru sekali gus.</p>
+
+        <h3>7.4 Hantar post baru</h3>
+        <figure class="code"><figcaption>app.js</figcaption><pre><code class="language-js">form.addEventListener('submit', async (event) =&gt; {
+  event.preventDefault(); // halang browser reload halaman
+  const button = form.querySelector('button');
+  button.disabled = true;
+  try {
+    await api('/api/posts', 'POST', {
+      username: nameInput.value,
+      content: contentInput.value,
+    });
+    localStorage.setItem('username', nameInput.value.trim());
+    contentInput.value = '';
+    counter.textContent = '0/500';
+    await loadFeed();
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    button.disabled = false;
+  }
+});</code></pre></figure>
+        <ul>
+          <li><code>event.preventDefault()</code> penting. Tanpa baris ini, browser akan reload halaman apabila borang dihantar, mengikut tingkah laku asal borang HTML.</li>
+          <li>Butang dimatikan (<code>disabled</code>) semasa menunggu, supaya klik dua kali tidak menghantar post berganda.</li>
+          <li><code>localStorage</code> mengingat nama anda dalam browser untuk lawatan seterusnya.</li>
+        </ul>
+
+        <h3>7.5 Like</h3>
+        <figure class="code"><figcaption>app.js · dalam renderPost()</figcaption><pre><code class="language-js">const likeBtn = el.querySelector('.like');
+likeBtn.querySelector('.count').textContent = post.likes;
+likeBtn.addEventListener('click', async () =&gt; {
+  const { likes } = await api(`/api/posts/${post.id}/like`, 'POST');
+  likeBtn.querySelector('.count').textContent = likes;
+  likeBtn.classList.add('liked');
+});</code></pre></figure>
+        <p>Setiap butang ♡ ada event listener sendiri yang ingat <code>post.id</code> miliknya. Server membalas bilangan like terkini, dan nombor itu dipaparkan.</p>
+      </section>
+
+      <section id="aliran">
+        <h2><span class="num">08</span>Apa berlaku bila anda tekan Post</h2>
+        <ol class="steps">
+          <li><div>Browser menjalankan fungsi <code>submit</code> dalam <code>app.js</code>.</div></li>
+          <li><div><code>api()</code> menghantar <code>POST</code> ke <code>/api/posts</code> bersama <code>{"username": "ali", "content": "hai"}</code>.</div></li>
+          <li><div>API menyemak data: nama 1 hingga 30 aksara, post 1 hingga 500 aksara. Jika tidak sah, API balas ralat 400.</div></li>
+          <li><div>API menjalankan SQL <code>INSERT INTO posts …</code> dalam D1.</div></li>
+          <li><div>D1 menyimpan baris baru dan memberinya <code>id</code>.</div></li>
+          <li><div>API membalas JSON post baru dengan status 201 (Created).</div></li>
+          <li><div><code>app.js</code> memanggil <code>loadFeed()</code>, yang meminta senarai terkini dan melukis semula halaman.</div></li>
+        </ol>
+      </section>
+
+      <section id="database">
+        <h2><span class="num">09</span>Database: table <code>posts</code></h2>
+        <p>Semua data Kicau berada dalam satu table bernama <code>posts</code> di Cloudflare D1. D1 menggunakan SQL, bahasa yang sama dipakai oleh MySQL dan PostgreSQL.</p>
+        <figure class="code"><figcaption>schema.sql</figcaption><pre><code class="language-sql">CREATE TABLE IF NOT EXISTS posts (
+  id         INTEGER PRIMARY KEY AUTOINCREMENT,
+  username   TEXT    NOT NULL CHECK (length(username) BETWEEN 1 AND 30),
+  content    TEXT    NOT NULL CHECK (length(content) BETWEEN 1 AND 500),
+  parent_id  INTEGER REFERENCES posts(id) ON DELETE CASCADE,
+  likes      INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT    NOT NULL DEFAULT (datetime('now'))
+);</code></pre></figure>
+        <p>Reply juga disimpan dalam table yang sama. Bezanya, reply ada <code>parent_id</code> yang menunjuk kepada <code>id</code> post asal.</p>
+
+        <h3>SQL yang dijalankan oleh API</h3>
+        <figure class="code"><figcaption>Dalam API (Worker)</figcaption><pre><code class="language-sql">-- GET /api/posts
+SELECT * FROM posts WHERE parent_id IS NULL ORDER BY id DESC LIMIT 50;
+
+-- POST /api/posts
+INSERT INTO posts (username, content, parent_id) VALUES (?, ?, ?);
+
+-- POST /api/posts/1/like
+UPDATE posts SET likes = likes + 1 WHERE id = ?;</code></pre></figure>
+        <div class="note">
+          <span class="label">Kenapa tanda ?</span>
+          <p>Tanda <code>?</code> ialah tempat kosong. API mengisi nilai sebenar secara berasingan, jadi teks yang ditaip pengguna tidak boleh mengubah arahan SQL. Ini menghalang serangan SQL injection.</p>
+        </div>
+      </section>
+
+      <section id="latihan">
+        <h2><span class="num">10</span>Latihan</h2>
+        <p>Semua latihan hanya mengubah fail dalam folder <code>frontend</code>. Selepas setiap perubahan, simpan fail dan tekan <kbd>Ctrl</kbd> + <kbd>F5</kbd> dalam browser.</p>
+
+        <div class="exercise">
+          <h3>1. Tukar warna like <span class="chip easy">Mudah</span></h3>
+          <p>Jadikan butang like berwarna biru apabila ditekan.</p>
+          <details><summary>Petunjuk</summary>
+            <p>Dalam <code>style.css</code>, cari pemboleh ubah <code>--like</code> dalam <code>:root</code>.</p>
+            <figure class="code"><figcaption>style.css</figcaption><pre><code class="language-css">--like: #2563eb;</code></pre></figure>
+          </details>
+        </div>
+
+        <div class="exercise">
+          <h3>2. Tarikh penuh bila hover <span class="chip easy">Mudah</span></h3>
+          <p>Apabila tetikus berada di atas "5 minit lalu", paparkan tarikh dan masa penuh.</p>
+          <details><summary>Petunjuk</summary>
+            <p>Atribut HTML <code>title</code> memaparkan teks semasa hover. Tambah satu baris dalam <code>renderPost()</code>:</p>
+            <figure class="code"><figcaption>app.js</figcaption><pre><code class="language-js">el.querySelector('.time').title = post.created_at + ' UTC';</code></pre></figure>
+          </details>
+        </div>
+
+        <div class="exercise">
+          <h3>3. Auto-refresh <span class="chip mid">Sederhana</span></h3>
+          <p>Muat semula senarai post setiap 10 saat secara automatik. Selepas berjaya, buka reply pada satu post dan tunggu 10 saat. Apa berlaku, dan kenapa?</p>
+          <details><summary>Petunjuk</summary>
+            <figure class="code"><figcaption>app.js · baris terakhir</figcaption><pre><code class="language-js">setInterval(loadFeed, 10000);</code></pre></figure>
+            <p>Bahagian reply tertutup kerana <code>loadFeed()</code> membuang semua <code>&lt;li&gt;</code> dan membina semula dari acuan.</p>
+          </details>
+        </div>
+
+        <div class="exercise">
+          <h3>4. Butang salin <span class="chip mid">Sederhana</span></h3>
+          <p>Tambah butang <strong>Salin</strong> pada setiap post yang menyalin isi post ke clipboard.</p>
+          <details><summary>Petunjuk</summary>
+            <p>Tambah butang dalam <code>&lt;div class="actions"&gt;</code> dalam templat, kemudian beri ia event listener dalam <code>renderPost()</code>:</p>
+            <figure class="code"><figcaption>index.html</figcaption><pre><code class="language-html">&lt;button class="share" type="button"&gt;Salin&lt;/button&gt;</code></pre></figure>
+            <figure class="code"><figcaption>app.js · dalam renderPost()</figcaption><pre><code class="language-js">el.querySelector('.share').addEventListener('click', () =&gt; {
+  navigator.clipboard.writeText(post.content);
+});</code></pre></figure>
+          </details>
+        </div>
+
+        <div class="exercise">
+          <h3>5. Had 280 aksara <span class="chip hard">Mencabar</span></h3>
+          <p>Tukar had post daripada 500 kepada 280 aksara. Kemudian buka Console (<kbd>F12</kbd>) dan jalankan arahan di bawah. Adakah post 300 aksara itu berjaya? Apa maksudnya untuk keselamatan app?</p>
+          <figure class="code"><figcaption>Console</figcaption><pre><code class="language-js">api('/api/posts', 'POST', { username: 'ujian', content: 'a'.repeat(300) });</code></pre></figure>
+          <details><summary>Petunjuk</summary>
+            <p>Ubah <code>maxlength="500"</code> dalam <code>index.html</code> dan teks <code>/500</code> dalam <code>app.js</code>. Post 300 aksara tetap berjaya kerana API masih membenarkan 500. Validasi dalam browser boleh dipintas oleh sesiapa. Server mesti sentiasa menyemak semula data.</p>
+          </details>
+        </div>
+      </section>
+
+      <section id="masalah">
+        <h2><span class="num">11</span>Masalah biasa</h2>
+        <div class="table">
+          <table>
+            <thead><tr><th>Gejala</th><th>Punca biasa</th><th>Cara betulkan</th></tr></thead>
+            <tbody>
+              <tr><td>"Gagal muat post: Failed to fetch"</td><td>URL API salah, atau tiada internet</td><td>Semak <code>const API</code> dalam <code>app.js</code>. Buka URL itu + <code>/api/posts</code> dalam tab baru. Jika JSON muncul, URL betul.</td></tr>
+              <tr><td>Halaman tiada gaya, hanya teks biasa</td><td><code>style.css</code> tiada dalam folder yang sama, atau nama fail salah</td><td>Pastikan tiga fail berada dalam satu folder dengan nama yang tepat.</td></tr>
+              <tr><td>Tekan Post, tiada apa berlaku</td><td>Ralat JavaScript selepas anda mengedit <code>app.js</code></td><td>Tekan <kbd>F12</kbd> → <strong>Console</strong>. Baca ralat merah dan nombor barisnya.</td></tr>
+              <tr><td>"Nama mesti 1-30 aksara."</td><td>Nama kosong atau terlalu panjang</td><td>Isi nama sebelum post.</td></tr>
+              <tr><td>Ubah kod tapi tiada perubahan</td><td>Browser masih guna fail lama</td><td>Simpan fail, kemudian tekan <kbd>Ctrl</kbd> + <kbd>F5</kbd>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="pensyarah">
+        <h2><span class="num">12</span>Untuk pensyarah</h2>
+        <p>Bahagian ini untuk penyedia API. Pelajar boleh langkau. Perlu Node.js dan akaun Cloudflare.</p>
+        <ol class="steps">
+          <li><div>Deploy API sekali sahaja, dari folder <code>api</code>:
+            <figure class="code"><figcaption>Terminal</figcaption><pre><code class="language-bash">cd api
+npx wrangler login
+npx wrangler d1 execute DB --remote --file=schema.sql
+npx wrangler deploy</code></pre></figure>
+          </div></li>
+          <li><div><code>wrangler deploy</code> memaparkan URL seperti <code>https://kicau.nama-anda.workers.dev</code>. Salin URL itu ke <code>const API</code> dalam <code>frontend/app.js</code>, kemudian edarkan folder <code>frontend</code>.</div></li>
+          <li><div>URL yang sama memaparkan app penuh untuk demo di projektor, dan panduan ini di <code>/panduan.html</code>.</div></li>
+        </ol>
+
+        <h3>Uji di komputer sendiri dahulu</h3>
+        <figure class="code"><figcaption>Terminal · dalam folder api</figcaption><pre><code class="language-bash">npx wrangler d1 execute DB --local --file=schema.sql
+npx wrangler dev</code></pre></figure>
+        <p>Kemudian set <code>const API = 'http://127.0.0.1:8787'</code> dan buka <code>frontend/index.html</code>.</p>
+
+        <h3>Kosongkan semua post</h3>
+        <figure class="code"><figcaption>Terminal · dalam folder api</figcaption><pre><code class="language-bash">npx wrangler d1 execute DB --remote --command "DELETE FROM posts"</code></pre></figure>
+        <div class="warn">
+          <span class="label">Amaran</span>
+          <p>Arahan ini memadam semua post secara kekal. Tiada undo.</p>
+        </div>
+
+        <h3>Push ke GitHub</h3>
+        <figure class="code"><figcaption>Terminal · dalam folder kicau</figcaption><pre><code class="language-bash">git init
+git add .
+git commit -m "Kicau versi pertama"
+git branch -M main
+git remote add origin https://github.com/NAMA-ANDA/kicau.git
+git push -u origin main</code></pre></figure>
+        <p>Untuk deploy automatik setiap kali push: Cloudflare Dashboard → <strong>Workers &amp; Pages</strong> → <strong>Create</strong> → <strong>Import a repository</strong> → pilih <code>kicau</code> → set <strong>Root directory</strong> kepada <code>api</code> → <strong>Deploy</strong>.</p>
+        <div class="note">
+          <span class="label">Nota</span>
+          <p>API ini terbuka kepada sesiapa yang tahu URL-nya. Ia sesuai untuk kelas, tetapi tidak untuk app sebenar. Login dalam Bahagian 3 menangani perkara ini.</p>
+        </div>
+      </section>
+
+      <section id="seterusnya">
+        <h2><span class="num">13</span>Seterusnya</h2>
+        <p><strong>Bahagian 2:</strong> muat naik gambar profil, serta gambar atau video pada post. Fail disimpan dalam Cloudflare R2 (object storage).</p>
+        <p><strong>Bahagian 3:</strong> sekarang sesiapa boleh post menggunakan apa-apa nama, termasuk nama orang lain. Kita tambah <strong>login</strong> supaya setiap post milik akaun yang sebenar.</p>
+      </section>
+
+      <footer>Kicau · Panduan Bahagian 1 · Web Development</footer>
+    </article>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  // Warna sintaks (jika library berjaya dimuatkan; jika tidak, kod tetap boleh dibaca).
+  if (window.hljs) hljs.highlightAll();
+
+  // Butang "Salin" pada setiap blok kod.
+  document.querySelectorAll('figure.code').forEach((fig) => {
+    const code = fig.querySelector('code');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy';
+    btn.textContent = 'Salin';
+    fig.querySelector('figcaption').append(btn);
+
+    btn.addEventListener('click', () => {
+      Promise.resolve()
+        .then(() => navigator.clipboard.writeText(code.textContent))
+        .then(() => { btn.textContent = 'Disalin'; })
+        .catch(() => {
+          const range = document.createRange();
+          range.selectNodeContents(code);
+          const sel = getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          btn.textContent = 'Tekan Ctrl+C';
+        })
+        .finally(() => setTimeout(() => { btn.textContent = 'Salin'; }, 1800));
+    });
+  });
+</script>
+
+</html>
