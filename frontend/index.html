@@ -16,9 +16,28 @@
 
     <!-- Borang post baru. "required" & "maxlength" = validasi asas oleh browser. -->
     <form id="post-form">
-      <input name="username" placeholder="Nama anda" required maxlength="30">
+      <div class="who">
+        <!-- Klik avatar untuk pilih gambar profil. <label> membuka input fail di dalamnya. -->
+        <label id="my-avatar" class="avatar avatar-pick" title="Tukar gambar profil">
+          <span>?</span>
+          <img alt="" hidden>
+          <input id="avatar-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif"
+                 class="sr-only" aria-label="Tukar gambar profil">
+        </label>
+        <input name="username" placeholder="Nama anda" required maxlength="30">
+      </div>
+
       <textarea name="content" placeholder="Apa cerita hari ini?" required maxlength="500"></textarea>
+
+      <!-- Pratonton gambar/video yang dipilih, sebelum dihantar -->
+      <div id="media-preview" hidden></div>
+
       <div class="form-footer">
+        <label class="ghost attach">
+          📎 Gambar / video
+          <input name="media" type="file"
+                 accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" class="sr-only">
+        </label>
         <span id="counter" class="muted">0/500</span>
         <button class="primary">Post</button>
       </div>
@@ -31,13 +50,16 @@
   <!-- Templat satu post. app.js salin (clone) templat ini untuk setiap post. -->
   <template id="post-template">
     <li class="post">
-      <div class="avatar"></div>
+      <div class="avatar"><span></span><img alt="" hidden></div>
       <div class="body">
         <div class="meta">
           <strong class="username"></strong>
           <time class="time muted"></time>
         </div>
         <p class="content"></p>
+        <!-- Jika post ada media, salah satu daripada dua elemen ini dipaparkan -->
+        <img class="media" alt="Gambar dalam post" loading="lazy" hidden>
+        <video class="media" controls preload="metadata" playsinline hidden></video>
         <div class="actions">
           <button class="like" type="button">♡ <span class="count">0</span></button>
           <button class="reply-toggle" type="button">💬 <span class="count">0</span></button>
