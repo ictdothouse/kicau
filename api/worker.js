@@ -1,12 +1,12 @@
 // Kicau: backend API (Cloudflare Worker).
-// Boleh di-deploy tanpa install: Cloudflare Dashboard → Workers → cipta Worker → paste fail ini.
+// Jalankan di komputer: npm run dev. Deploy ke Cloudflare: npm run deploy.
 //
 // Aliran:  frontend --fetch()--> Worker (fail ini) --SQL-----> D1 (data teks)
 //                                                  --put/get--> KV (fail gambar & video)
 //
-// Binding (Dashboard: Worker → Settings → Bindings):
-//   DB    = database D1
-//   MEDIA = namespace KV
+// Binding (lihat wrangler.jsonc):
+//   env.DB    = database D1
+//   env.MEDIA = namespace KV
 //
 // API:
 //   GET  /api/posts                senarai post utama (terbaru dahulu)

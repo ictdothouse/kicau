@@ -2,9 +2,9 @@
 // Data teks (post, like, reply) disimpan dalam D1. Fail (gambar, video) disimpan dalam KV.
 // Kedua-duanya dicapai melalui API (Cloudflare Worker) menggunakan fetch().
 
-// URL API. Sekarang: server local pensyarah. Selepas deploy, tukar kepada URL Worker
-// (contoh https://kicau.nama-anda.workers.dev) sebelum beri fail ini kepada pelajar.
-const API = 'http://127.0.0.1:8787';
+// URL API. Kosong = API berada di alamat yang sama dengan halaman ini
+// (http://localhost:8787 semasa npm run dev, atau URL Worker selepas deploy).
+const API = '';
 
 const feed = document.querySelector('#feed');
 const form = document.querySelector('#post-form');

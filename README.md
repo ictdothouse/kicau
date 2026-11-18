@@ -7,12 +7,31 @@ frontend/ (HTML, CSS, JS)  --fetch()-->  api/worker.js (Cloudflare Worker)  --> 
                                                                            --> KV (gambar & video)
 ```
 
-Tiada install. Pelajar hanya perlukan browser, text editor dan akaun Cloudflare percuma (tanpa kad).
+Perlu: Node.js 20+ dan text editor. Akaun Cloudflare (percuma, tanpa kad) hanya diperlukan untuk deploy.
 
-| Versi | Isi | Muat turun |
-|-------|-----|------------|
-| Bahagian 1 | Post, like, reply (D1) | tag `bahagian-1` |
-| Bahagian 2 | + gambar profil, gambar/video pada post (KV) | tag `bahagian-2` |
+## Jalankan di komputer sendiri
+
+```bash
+git clone https://github.com/ictdothouse/kicau.git
+cd kicau
+npm install
+npm run db:init     # cipta table dalam D1 local
+npm run dev         # buka http://localhost:8787
+```
+
+D1 dan KV disimulasi dalam folder `.wrangler/`. Tiada akaun diperlukan semasa belajar.
+
+## Deploy ke Cloudflare (akaun anda sendiri)
+
+```bash
+npx wrangler login
+npx wrangler d1 create kicau-db                  # salin "database_id" ke wrangler.jsonc
+npx wrangler kv namespace create kicau-media     # salin "id" ke kv_namespaces dalam wrangler.jsonc
+npm run db:init:remote                           # cipta table dalam D1 sebenar
+npm run deploy                                   # URL: https://kicau.<subdomain-anda>.workers.dev
+```
+
+Frontend dan API dihantar dari URL yang sama, jadi `const API = ''` dalam `app.js` tidak perlu diubah.
 
 ## Fail
 
@@ -21,27 +40,10 @@ Tiada install. Pelajar hanya perlukan browser, text editor dan akaun Cloudflare 
 | `frontend/index.html` | Struktur halaman + templat post |
 | `frontend/style.css` | Gaya (termasuk mod gelap) |
 | `frontend/app.js` | `fetch()` ke API: post, like, reply, upload |
-| `frontend/panduan.html` | Panduan pelajar |
 | `api/worker.js` | API: baca/tulis D1, simpan/ambil fail dalam KV |
 | `api/schema.sql` | Table `posts` dan `profiles` |
-| `api/wrangler.jsonc` | Tetapan untuk deploy dengan CLI (pensyarah sahaja) |
-
-## Pelajar: deploy API sendiri melalui Cloudflare Dashboard
-
-Log masuk ke https://dash.cloudflare.com (daftar percuma, tiada kad diperlukan).
-Nama menu dalam Dashboard mungkin sedikit berbeza dari senarai ini.
-
-1. **Database D1**: Storage & Databases → D1 SQL Database → Create → nama `kicau-db`.
-   Buka database itu → tab **Console** → paste isi `api/schema.sql` → Execute.
-   Jika ralat, paste dan Execute setiap arahan `CREATE ...;` satu demi satu.
-2. **Storage KV**: Storage & Databases → Workers KV → Create namespace → nama `kicau-media`.
-3. **Worker**: Workers & Pages → Create → Hello World → beri nama, contoh `kicau-ali` → Deploy.
-   Kemudian **Edit code** → padam semua kod → paste isi `api/worker.js` → Deploy.
-4. **Binding** (sambung Worker kepada D1 dan KV): Worker → Settings → Bindings → Add.
-   - D1 database: Variable name `DB`, pilih `kicau-db`.
-   - KV namespace: Variable name `MEDIA`, pilih `kicau-media`.
-5. **Uji**: buka `https://kicau-ali.<subdomain-anda>.workers.dev/api/posts`. Jawapan `[]` bermaksud API berjaya.
-6. Salin URL Worker ke `const API` dalam `frontend/app.js`, kemudian double-click `frontend/index.html`.
+| `wrangler.jsonc` | Tetapan Worker: fail utama, folder frontend, binding D1 dan KV |
+| `package.json` | Skrip `npm run dev`, `db:init`, `deploy` |
 
 ## API
 
@@ -59,29 +61,16 @@ Nama menu dalam Dashboard mungkin sedikit berbeza dari senarai ini.
 
 Fail dibenarkan: JPG, PNG, WebP, GIF (maks 5 MB), MP4, WebM (maks 20 MB).
 
-## Pensyarah: deploy dengan CLI (pilihan)
-
-Perlu Node.js. Dalam folder `api/`:
-
-```bash
-npx wrangler login
-npx wrangler kv namespace create kicau-media      # salin "id" ke kv_namespaces dalam wrangler.jsonc
-npx wrangler d1 execute DB --remote --file=schema.sql
-npx wrangler deploy
-```
-
-Uji di komputer sendiri: `npx wrangler d1 execute DB --local --file=schema.sql`, kemudian `npx wrangler dev`
-dan set `const API = 'http://127.0.0.1:8787'`.
-
-**Naik taraf dari Bahagian 1** (table `posts` sudah wujud): jalankan sekali dahulu
-`ALTER TABLE posts ADD COLUMN media_key TEXT;`, kemudian `schema.sql`.
-
 ## Nota
 
+- **Naik taraf dari Bahagian 1** (table `posts` sudah wujud): jalankan sekali dahulu
+  `npx wrangler d1 execute DB --local --command "ALTER TABLE posts ADD COLUMN media_key TEXT"`
+  (atau `--remote`), kemudian `npm run db:init`.
 - API terbuka kepada sesiapa yang tahu URL. Sesuai untuk kelas, bukan untuk produksi. Login datang dalam Bahagian 3.
 - Pelan percuma KV: 1 GB storan, 1,000 upload sehari. Bila had habis, upload gagal sehingga esok; tiada caj.
 - Industri biasanya guna object storage seperti Cloudflare R2 atau AWS S3. Kodnya hampir sama
   (`put`/`get` ikut key), tetapi R2 memerlukan kad bayaran.
+- Kosongkan data local: padam folder `.wrangler/`, kemudian `npm run db:init`.
 
 ## Latihan
 

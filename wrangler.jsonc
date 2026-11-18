@@ -1,14 +1,15 @@
 {
   // Nama Worker. URL selepas deploy: https://kicau.<subdomain-anda>.workers.dev
   "name": "kicau",
-  "main": "worker.js",
+  "main": "api/worker.js",
   "compatibility_date": "2026-10-01",
 
-  // Worker ini juga hos salinan frontend, supaya URL Worker boleh terus dibuka sebagai demo.
-  // Request yang bukan fail statik (contoh /api/posts) akan sampai ke worker.js.
-  "assets": { "directory": "../frontend" },
+  // Fail frontend (HTML/CSS/JS) dihantar terus ke browser.
+  // Request yang bukan fail statik (contoh /api/posts) akan sampai ke api/worker.js.
+  "assets": { "directory": "./frontend" },
 
   // Database D1 (data teks). Dalam kod Worker: env.DB
+  // Akaun anda sendiri: npx wrangler d1 create kicau-db, kemudian salin "database_id" ke sini.
   "d1_databases": [
     {
       "binding": "DB",
@@ -18,8 +19,8 @@
   ],
 
   // Namespace KV (fail gambar & video). Dalam kod Worker: env.MEDIA
-  // Cipta sekali: npx wrangler kv namespace create kicau-media, kemudian salin "id" ke sini.
-  // (Untuk "wrangler dev" di komputer sendiri, id ini boleh dibiarkan.)
+  // Akaun anda sendiri: npx wrangler kv namespace create kicau-media, kemudian salin "id" ke sini.
+  // Untuk "npm run dev" di komputer sendiri, kedua-dua id boleh dibiarkan seperti ini.
   "kv_namespaces": [
     {
       "binding": "MEDIA",
